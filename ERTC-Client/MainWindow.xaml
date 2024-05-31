@@ -5,13 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ERTC_Client"
         mc:Ignorable="d"
-        Title="Login" Height="350" Width="400">
+        Title="Login" Height="300" Width="400">
     <Grid>
+
         <StackPanel>
-            <TextBox x:Name="EmailTextBox" Margin="10"/>
-            <PasswordBox x:Name="PasswordBox" Margin="10"/>
-            <Button Content="Login" Click="LoginButton_Click" Margin="10"/>
-            <TextBlock x:Name="StatusTextBlock" Foreground="Red" Margin="10"/>
+            <TextBlock Text="Connexion Client Admin" Grid.Row="0" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="212"/>
+            <TextBlock Text="Admin Email:" Margin="10" Width="275"/>
+            <TextBox x:Name="EmailTextBox" Width="300"/>
+            <TextBlock Text="Admin Password:" Margin="10" Width="275"/>
+            <PasswordBox x:Name="PasswordBox" Margin="10" Width="300"/>
+            <TextBlock x:Name="StatusTextBlock" Foreground="Blue" Margin="10"/>
+            <Button Content="Login" Click="LoginButton_Click" Width="184"/>
         </StackPanel>
     </Grid>
 </Window>

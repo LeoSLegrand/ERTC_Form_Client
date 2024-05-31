@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ERTC_Client.Helper;
+using ERTC_Client.Windows;
 using BCrypt.Net;
 
 namespace ERTC_Client
@@ -38,7 +39,13 @@ namespace ERTC_Client
             if (dbHelper.AuthenticateUser(email, password))
             {
                 StatusTextBlock.Text = "Login successful!";
-                // Proceed to the next window or application state
+
+                // Open the Index window
+                ClientIndex indexWindow = new ClientIndex();
+                indexWindow.Show();
+
+                // Close the current window
+                this.Close();
             }
             else
             {

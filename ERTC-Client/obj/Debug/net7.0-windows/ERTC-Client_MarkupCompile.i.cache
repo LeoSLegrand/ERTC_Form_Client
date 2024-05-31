@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 C:\Users\leose\source\repos\ERTC-Client\ERTC-Client\App.xaml
-11407045341
+2-1684900027
 
-7-1108844731
+8-1388545016
 207-1093434361
-MainWindow.xaml;
+MainWindow.xaml;Windows\ClientIndex.xaml;
 
-False
+True
 

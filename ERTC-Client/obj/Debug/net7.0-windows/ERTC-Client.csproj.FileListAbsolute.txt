@@ -34,3 +34,6 @@ C:\Users\leose\source\repos\ERTC-Client\ERTC-Client\bin\Debug\net7.0-windows\run
 C:\Users\leose\source\repos\ERTC-Client\ERTC-Client\bin\Debug\net7.0-windows\runtimes\win-x64\native\krbcc64.dll
 C:\Users\leose\source\repos\ERTC-Client\ERTC-Client\obj\Debug\net7.0-windows\ERTC-Client.csproj.CopyComplete
 C:\Users\leose\source\repos\ERTC-Client\ERTC-Client\bin\Debug\net7.0-windows\BCrypt.Net-Next.dll
+C:\Users\leose\source\repos\ERTC-Client\ERTC-Client\obj\Debug\net7.0-windows\Windows\ClientIndex.g.cs
+C:\Users\leose\source\repos\ERTC-Client\ERTC-Client\obj\Debug\net7.0-windows\Windows\ClientIndex.baml
+C:\Users\leose\source\repos\ERTC-Client\ERTC-Client\obj\Debug\net7.0-windows\ERTC-Client.sourcelink.json
