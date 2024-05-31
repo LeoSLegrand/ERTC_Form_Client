@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ERTC_Client"
         mc:Ignorable="d"
-        Title="Login" Height="300" Width="400">
+        Title="Login" Height="300" Width="400"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="LightGray">
     <Grid>
 
         <StackPanel>

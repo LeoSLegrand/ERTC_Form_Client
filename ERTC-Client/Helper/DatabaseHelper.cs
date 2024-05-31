@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using BCrypt.Net;
 using System.Data;
+using System.Xml.Linq;
 
 namespace ERTC_Client.Helper
 {
@@ -18,6 +19,7 @@ namespace ERTC_Client.Helper
             this.connectionString = connectionString;
         }
 
+        //LOGIN --------------------------------------------------------------------------------------------------------------------------------
         public bool AuthenticateUser(string email, string password)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -53,6 +55,59 @@ namespace ERTC_Client.Helper
             return false;
         }
 
+        //USERS CREATION --------------------------------------------------------------------------------------------------------------------------------
+        public bool CreateUser(string name, string email, string password)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
+                    string query = "INSERT INTO users (name, email, password) VALUES (@Name, @Email, @Password)";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Password", hashedPassword);
+
+                    int result = cmd.ExecuteNonQuery();
+                    return result > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"User creation failed: {ex.Message}");
+                }
+            }
+            return false;
+        }
+
+        //DELETE USERS --------------------------------------------------------------------------------------------------------------------------------
+        public bool DeleteUser(string email)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = "DELETE FROM users WHERE email = @Email";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Email", email);
+
+                    int result = cmd.ExecuteNonQuery();
+                    return result > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"User deletion failed: {ex.Message}");
+                }
+            }
+            return false;
+        }
+
+        //TEST CONNECTION --------------------------------------------------------------------------------------------------------------------------------
         public bool TestConnection()
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
