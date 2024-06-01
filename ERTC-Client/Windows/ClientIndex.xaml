@@ -46,7 +46,21 @@
             <!-- ROLES -->
             <TabItem Header="Roles">
                 <Grid>
-                    <TextBlock Text="Roles Management" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Roles Management" FontSize="20" Margin="0,0,0,10"/>
+
+                        <ListBox x:Name="UsersListBox" DisplayMemberPath="Email" SelectionChanged="UsersListBox_SelectionChanged" Margin="0,0,0,10"/>
+
+                        <ComboBox x:Name="RolesComboBox" Margin="0,0,0,10">
+                            <ComboBoxItem Content="Client" Tag="client"/>
+                            <ComboBoxItem Content="Testeur" Tag="testeur"/>
+                            <ComboBoxItem Content="Administrateur" Tag="admin"/>
+                        </ComboBox>
+
+                        <Button Content="Assign Role" Click="AssignRoleButton_Click" Margin="0,0,0,10"/>
+
+                        <TextBlock x:Name="RolesManagementStatusTextBlock" Foreground="Red" Margin="0,10,0,0"/>
+                    </StackPanel>
                 </Grid>
             </TabItem>
 
