@@ -93,17 +93,16 @@ namespace ERTC_Client.Helper
 
 
         //DELETE USERS --------------------------------------------------------------------------------------------------------------------------------
-        public bool DeleteUser(string email)
+        public bool DeleteUser(int userId)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-
-                    string query = "DELETE FROM users WHERE email = @Email";
+                    string query = "DELETE FROM users WHERE id = @UserId";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
 
                     int result = cmd.ExecuteNonQuery();
                     return result > 0;
@@ -115,6 +114,7 @@ namespace ERTC_Client.Helper
             }
             return false;
         }
+
 
 
         //FETCH USERS LIST --------------------------------------------------------------------------------------------------------------------------------

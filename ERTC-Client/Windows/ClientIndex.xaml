@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ERTC_Client.Windows"
         mc:Ignorable="d"
-        Title="ClientIndex" Height="450" Width="800"
+        Title="ClientIndex" Height="600" Width="800"
         WindowStartupLocation="CenterScreen"
         Background="LightGray">
     
@@ -28,20 +28,31 @@
 
                         <TextBlock Text="New User Email:" Margin="0,0,0,10"/>
                         <TextBox x:Name="NewUserEmailTextBox" Margin="0,0,0,10"/>
-                        
+
                         <TextBlock Text="New User Password :" Margin="0,0,0,10"/>
                         <PasswordBox x:Name="NewUserPasswordBox" Margin="0,0,0,10"/>
-                        
+
                         <Button Content="Create User" Click="CreateUserButton_Click" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Email of User to Delete:" Margin="0,0,0,10"/>
-                        <TextBox x:Name="DeleteUserEmailTextBox" Margin="20,20,0,10"/>
+                        <TextBlock Text="Users List:" Margin="0,10,0,10"/>
+                        <ListBox x:Name="UsersListBoxForDelete" SelectionChanged="UsersListBox_SelectionChanged" Margin="0,0,0,10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding name}" FontWeight="Bold" Margin="0,0,10,0"/>
+                                        <TextBlock Text="{Binding email}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
                         <Button Content="Delete User" Click="DeleteUserButton_Click" Margin="0,0,0,10"/>
 
                         <TextBlock x:Name="UserManagementStatusTextBlock" Foreground="Red" Margin="0,10,0,0"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
+
 
             <!-- ROLES -->
             <TabItem Header="Roles">

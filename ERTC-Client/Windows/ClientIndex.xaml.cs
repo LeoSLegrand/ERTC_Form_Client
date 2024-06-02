@@ -42,12 +42,13 @@ namespace ERTC_Client.Windows
             LoadProducts();
         }
 
-
         //FETCH USERS LIST ---------------------------------------------------------------------------------------------------------------------------------------------
         private void LoadUsers()
         {
             var users = dbHelper.GetUsers();
             UsersListBox.ItemsSource = users;
+            UsersListBoxForDelete.ItemsSource = users;
+
         }
 
         //ASSIGN ROLE TO USER ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -90,7 +91,7 @@ namespace ERTC_Client.Windows
         }
 
 
-        //ADD USERS ---------------------------------------------------------------------------------------------------------------------------------------------
+        //CREATE USERS ---------------------------------------------------------------------------------------------------------------------------------------------
         private void CreateUserButton_Click(object sender, RoutedEventArgs e)
         {
             string name = NewUserNameTextBox.Text;
@@ -110,6 +111,7 @@ namespace ERTC_Client.Windows
                 NewUserNameTextBox.Text = string.Empty;
                 NewUserEmailTextBox.Text = string.Empty;
                 NewUserPasswordBox.Password = string.Empty;
+                LoadUsers(); // Refresh the users list after creation
             }
             else
             {
@@ -117,28 +119,29 @@ namespace ERTC_Client.Windows
             }
         }
 
+
         //DELETE USERS ---------------------------------------------------------------------------------------------------------------------------------------------
         private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
         {
-            string email = DeleteUserEmailTextBox.Text;
-
-            if (string.IsNullOrWhiteSpace(email))
+            if (UsersListBoxForDelete.SelectedItem == null)
             {
-                UserManagementStatusTextBlock.Text = "Email cannot be empty.";
+                UserManagementStatusTextBlock.Text = "Please select a user to delete.";
                 return;
             }
 
-            if (dbHelper.DeleteUser(email))
+            User selectedUser = (User)UsersListBoxForDelete.SelectedItem;
+
+            if (dbHelper.DeleteUser(selectedUser.Id))
             {
                 UserManagementStatusTextBlock.Text = "User deleted successfully!";
-                // Clear the input field
-                DeleteUserEmailTextBox.Text = string.Empty;
+                LoadUsers(); // Refresh the users list after deletion
             }
             else
             {
                 UserManagementStatusTextBlock.Text = "Failed to delete user.";
             }
         }
+
 
         //FETCH PRODUCT LIST --------------------------------------------------------------------------------------------------------------------------------
         private void LoadProducts()
