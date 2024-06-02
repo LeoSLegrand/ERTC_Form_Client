@@ -36,6 +36,12 @@ namespace ERTC_Client
             string email = EmailTextBox.Text;
             string password = PasswordBox.Password;
 
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                StatusTextBlock.Text = "Email and password cannot be empty.";
+                return;
+            }
+
             if (dbHelper.AuthenticateUser(email, password))
             {
                 StatusTextBlock.Text = "Login successful!";
@@ -43,14 +49,13 @@ namespace ERTC_Client
                 // Open the Index window
                 ClientIndex indexWindow = new ClientIndex();
                 indexWindow.Show();
-
-                // Close the current window
                 this.Close();
             }
             else
             {
-                StatusTextBlock.Text = "Login failed. Please check your credentials.";
+                StatusTextBlock.Text = "Invalid email or password, or you do not have admin access.";
             }
         }
+
     }
 }

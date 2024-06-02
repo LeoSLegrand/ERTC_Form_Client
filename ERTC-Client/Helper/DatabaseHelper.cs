@@ -29,21 +29,37 @@ namespace ERTC_Client.Helper
                 {
                     conn.Open();
 
-                    string query = "SELECT password FROM users WHERE email = @Email";
+                    string query = "SELECT id, password FROM users WHERE email = @Email";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Email", email);
+
+                    int userId = 0;
+                    string storedHashedPassword = null;
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            string storedHashedPassword = reader["password"].ToString();
+                            userId = reader.GetInt32("id");
+                            storedHashedPassword = reader["password"].ToString();
+                        }
+                        else
+                        {
+                            return false; // User not found
+                        }
+                    }
 
-                            // Verify the input password with the stored hashed password
-                            if (BCrypt.Net.BCrypt.Verify(password, storedHashedPassword))
-                            {
-                                return true;
-                            }
+                    // Verify the input password with the stored hashed password
+                    if (BCrypt.Net.BCrypt.Verify(password, storedHashedPassword))
+                    {
+                        // Check if the user has the 'admin' role
+                        if (IsUserAdmin(userId))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("User does not have the admin role.");
                         }
                     }
                 }
@@ -55,6 +71,36 @@ namespace ERTC_Client.Helper
             }
             return false;
         }
+
+        private bool IsUserAdmin(int userId)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string roleQuery = @"
+                SELECT COUNT(*) 
+                FROM assigned_roles ar
+                JOIN roles r ON ar.role_id = r.id
+                WHERE ar.entity_id = @UserId AND r.name = 'admin'";
+
+                    MySqlCommand cmd = new MySqlCommand(roleQuery, conn);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    int roleCount = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    return roleCount > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Role check failed: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
 
         //USERS CREATION --------------------------------------------------------------------------------------------------------------------------------
         public bool CreateUser(string name, string email, string password)
