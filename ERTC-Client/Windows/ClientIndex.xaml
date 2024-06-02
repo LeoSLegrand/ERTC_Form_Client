@@ -49,7 +49,16 @@
                     <StackPanel Margin="10">
                         <TextBlock Text="Roles Management" FontSize="20" Margin="0,0,0,10"/>
 
-                        <ListBox x:Name="UsersListBox" DisplayMemberPath="Email" SelectionChanged="UsersListBox_SelectionChanged" Margin="0,0,0,10"/>
+                        <ListBox x:Name="UsersListBox" SelectionChanged="UsersListBox_SelectionChanged" Margin="0,0,0,10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding name}" FontWeight="Bold" Margin="0,0,10,0"/>
+                                        <TextBlock Text="{Binding email}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
 
                         <ComboBox x:Name="RolesComboBox" Margin="0,0,0,10">
                             <ComboBoxItem Content="Client" Tag="client"/>
@@ -65,11 +74,37 @@
             </TabItem>
 
             <!-- PRODUITS -->
-            <TabItem Header="Products">
-                <Grid>
-                    <TextBlock Text="Products Management" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+            <TabItem Header="Produits">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- List of Products -->
+                    <ListBox x:Name="ProductsListBox" DisplayMemberPath="nom_produit" SelectionChanged="ProductsListBox_SelectionChanged" Grid.Column="0" Margin="0,0,10,0"/>
+
+                    <!-- Product Details -->
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Edit Product" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Product Name :" Margin="0,0,0,10"/>
+                        <TextBox x:Name="ProductNameTextBox" Margin="0,0,0,10"/>
+                        
+                        <TextBlock Text="Product Type :" Margin="0,0,0,10"/>
+                        <TextBox x:Name="ProductTypeTextBox" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Product Description :" Margin="0,0,0,10"/>
+                        <TextBox x:Name="ProductDescriptionTextBox" Margin="0,0,0,10"/>
+
+                        <Button Content="Update Product" Click="UpdateProductButton_Click" Margin="0,0,0,10"/>
+                        <Button Content="Delete Product" Click="DeleteProductButton_Click"/>
+
+                        <TextBlock x:Name="ProductManagementStatusTextBlock" Foreground="Red" Margin="0,10,0,0"/>
+                    </StackPanel>
                 </Grid>
             </TabItem>
+
         </TabControl>
 
         <Button Content="Log Out" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Click="LogoutButton_Click"/>

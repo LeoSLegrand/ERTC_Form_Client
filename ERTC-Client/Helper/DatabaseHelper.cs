@@ -116,28 +116,32 @@ namespace ERTC_Client.Helper
             return false;
         }
 
+
         //FETCH USERS LIST --------------------------------------------------------------------------------------------------------------------------------
         public List<User> GetUsers()
         {
-            List<User> users = new List<User>();
+            var users = new List<User>();
+
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-
-                    string query = "SELECT id, name, email FROM users";
+                    string query = "SELECT id, name, email, password, created_at, updated_at FROM users";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            User user = new User
+                            var user = new User
                             {
                                 Id = reader.GetInt32("id"),
-                                Name = reader.GetString("name"),
-                                Email = reader.GetString("email")
+                                name = reader.GetString("name"),
+                                email = reader.GetString("email"),
+                                password = reader.GetString("password"),
+                                created_at = reader.GetDateTime("created_at"),
+                                updated_at = reader.GetDateTime("updated_at")
                             };
                             users.Add(user);
                         }
@@ -145,11 +149,13 @@ namespace ERTC_Client.Helper
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Fetching users failed: {ex.Message}");
+                    Console.WriteLine($"Failed to retrieve users: {ex.Message}");
                 }
             }
+
             return users;
         }
+
 
         //ASSIGN ROLE TO USER --------------------------------------------------------------------------------------------------------------------------------
         public bool AssignRoleToUser(int userId, string roleName)
@@ -201,7 +207,97 @@ namespace ERTC_Client.Helper
             return false;
         }
 
+        //FETCH PRODUCT LIST --------------------------------------------------------------------------------------------------------------------------------
+        public List<Product> GetProducts()
+        {
+            var products = new List<Product>();
 
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM produits";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var product = new Product
+                            {
+                                Id = reader.GetInt32("id"),
+                                nom_produit = reader.GetString("nom_produit"),
+                                type_produit = reader.GetString("type_produit"),
+                                description = reader.GetString("description"),
+                                created_at = reader.GetDateTime("created_at"),
+                                updated_at = reader.GetDateTime("updated_at"),
+                                entreprise_id = reader.GetInt32("entreprise_id")
+                            };
+                            products.Add(product);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to retrieve products: {ex.Message}");
+                }
+            }
+
+            return products;
+        }
+
+        //UPDATE PRODUCT --------------------------------------------------------------------------------------------------------------------------------
+        public bool UpdateProduct(Product product)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = "UPDATE produits SET nom_produit = @NomProduit, type_produit = @TypeProduit, description = @Description, updated_at = @UpdatedAt WHERE id = @Id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@NomProduit", product.nom_produit);
+                    cmd.Parameters.AddWithValue("@TypeProduit", product.type_produit);
+                    cmd.Parameters.AddWithValue("@Description", product.description);
+                    cmd.Parameters.AddWithValue("@UpdatedAt", product.updated_at);
+                    cmd.Parameters.AddWithValue("@Id", product.Id);
+
+                    int result = cmd.ExecuteNonQuery();
+                    return result > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to update product: {ex.Message}");
+                }
+            }
+            return false;
+        }
+
+        //DELETE PRODUCT --------------------------------------------------------------------------------------------------------------------------------
+        public bool DeleteProduct(int productId)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = "DELETE FROM produits WHERE id = @Id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Id", productId);
+
+                    int result = cmd.ExecuteNonQuery();
+                    return result > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to delete product: {ex.Message}");
+                }
+            }
+            return false;
+        }
 
         //TEST CONNECTION --------------------------------------------------------------------------------------------------------------------------------
         public bool TestConnection()

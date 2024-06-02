@@ -32,12 +32,13 @@ namespace ERTC_Client.Windows
             dbHelper = new DatabaseHelper(connectionString);
 
             LoadUsers();
+            LoadProducts();
         }
 
         //FETCH USERS LIST ---------------------------------------------------------------------------------------------------------------------------------------------
         private void LoadUsers()
         {
-            List<User> users = dbHelper.GetUsers();
+            var users = dbHelper.GetUsers();
             UsersListBox.ItemsSource = users;
         }
 
@@ -69,6 +70,17 @@ namespace ERTC_Client.Windows
                 RolesManagementStatusTextBlock.Text = "Failed to assign role.";
             }
         }
+
+        //SELECT USER FROM THE LIST --------------------------------------------------------------------------------------------------------------------------------
+        private void UsersListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (UsersListBox.SelectedItem is User selectedUser)
+            {
+                // Optionally, can display some information about the selected user.
+                // e.g., RolesManagementStatusTextBlock.Text = $"Selected: {selectedUser.name} ({selectedUser.email})";
+            }
+        }
+
 
         //ADD USERS ---------------------------------------------------------------------------------------------------------------------------------------------
         private void CreateUserButton_Click(object sender, RoutedEventArgs e)
@@ -120,10 +132,65 @@ namespace ERTC_Client.Windows
             }
         }
 
-        //TODO OR MAYBE DELETE --------------------------------------------------------------------------------------------------------------------------------
-        private void UsersListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //FETCH PRODUCT LIST --------------------------------------------------------------------------------------------------------------------------------
+        private void LoadProducts()
         {
-            // Handle the event if necessary
+            var products = dbHelper.GetProducts();
+            ProductsListBox.ItemsSource = products;
+        }
+
+        //SELECT PRODUCT FROM THE LIST --------------------------------------------------------------------------------------------------------------------------------
+        private void ProductsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ProductsListBox.SelectedItem is Product selectedProduct)
+            {
+                ProductNameTextBox.Text = selectedProduct.nom_produit;
+                ProductTypeTextBox.Text = selectedProduct.type_produit;
+                ProductDescriptionTextBox.Text = selectedProduct.description;
+            }
+        }
+
+
+        //UPDATE A PRODUCT --------------------------------------------------------------------------------------------------------------------------------
+        private void UpdateProductButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProductsListBox.SelectedItem is Product selectedProduct)
+            {
+                selectedProduct.nom_produit = ProductNameTextBox.Text;
+                selectedProduct.type_produit = ProductTypeTextBox.Text;
+                selectedProduct.description = ProductDescriptionTextBox.Text;
+                selectedProduct.updated_at = DateTime.Now;
+
+                if (dbHelper.UpdateProduct(selectedProduct))
+                {
+                    ProductManagementStatusTextBlock.Text = "Product updated successfully!";
+                    LoadProducts();
+                }
+                else
+                {
+                    ProductManagementStatusTextBlock.Text = "Failed to update product.";
+                }
+            }
+        }
+
+        //DELETE A PRODUCT --------------------------------------------------------------------------------------------------------------------------------
+        private void DeleteProductButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProductsListBox.SelectedItem is Product selectedProduct)
+            {
+                if (dbHelper.DeleteProduct(selectedProduct.Id))
+                {
+                    ProductManagementStatusTextBlock.Text = "Product deleted successfully!";
+                    LoadProducts();
+                    ProductNameTextBox.Clear();
+                    ProductTypeTextBox.Clear();
+                    ProductDescriptionTextBox.Clear();
+                }
+                else
+                {
+                    ProductManagementStatusTextBlock.Text = "Failed to delete product.";
+                }
+            }
         }
 
         //LOGOUT ---------------------------------------------------------------------------------------------------------------------------------------------
