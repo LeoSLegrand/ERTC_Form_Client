@@ -259,6 +259,19 @@ namespace ERTC_Client.Helper
                         }
                     }
 
+                    // Check if the user already has this role
+                    string checkRoleQuery = "SELECT COUNT(*) FROM assigned_roles WHERE role_id = @RoleId AND entity_id = @UserId";
+                    MySqlCommand checkRoleCmd = new MySqlCommand(checkRoleQuery, conn);
+                    checkRoleCmd.Parameters.AddWithValue("@RoleId", roleId);
+                    checkRoleCmd.Parameters.AddWithValue("@UserId", userId);
+
+                    int roleCount = Convert.ToInt32(checkRoleCmd.ExecuteScalar());
+                    if (roleCount > 0)
+                    {
+                        Console.WriteLine("User already has this role");
+                        return false; // User already has this role
+                    }
+
                     // Assign the role to the user
                     string assignRoleQuery = "INSERT INTO assigned_roles (role_id, entity_id, entity_type) VALUES (@RoleId, @UserId, @EntityType)";
                     MySqlCommand assignRoleCmd = new MySqlCommand(assignRoleQuery, conn);
@@ -280,6 +293,7 @@ namespace ERTC_Client.Helper
             }
             return false;
         }
+
 
         //FETCH PRODUCT LIST --------------------------------------------------------------------------------------------------------------------------------
         public List<Product> GetProducts()
