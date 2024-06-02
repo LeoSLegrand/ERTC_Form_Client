@@ -139,18 +139,45 @@ namespace ERTC_Client.Helper
 
 
         //DELETE USERS --------------------------------------------------------------------------------------------------------------------------------
-        public bool DeleteUser(int userId)
+        public bool DeleteUser(string email)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-                    string query = "DELETE FROM users WHERE id = @UserId";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    int result = cmd.ExecuteNonQuery();
+                    // Get the user ID based on the email
+                    string getUserQuery = "SELECT id FROM users WHERE email = @Email";
+                    MySqlCommand getUserCmd = new MySqlCommand(getUserQuery, conn);
+                    getUserCmd.Parameters.AddWithValue("@Email", email);
+
+                    int userId;
+                    using (MySqlDataReader reader = getUserCmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            userId = reader.GetInt32("id");
+                        }
+                        else
+                        {
+                            Console.WriteLine("User not found");
+                            return false; // User not found
+                        }
+                    }
+
+                    // Delete assigned roles for the user
+                    string deleteRolesQuery = "DELETE FROM assigned_roles WHERE entity_id = @UserId";
+                    MySqlCommand deleteRolesCmd = new MySqlCommand(deleteRolesQuery, conn);
+                    deleteRolesCmd.Parameters.AddWithValue("@UserId", userId);
+                    deleteRolesCmd.ExecuteNonQuery();
+
+                    // Delete the user
+                    string deleteUserQuery = "DELETE FROM users WHERE email = @Email";
+                    MySqlCommand deleteUserCmd = new MySqlCommand(deleteUserQuery, conn);
+                    deleteUserCmd.Parameters.AddWithValue("@Email", email);
+                    int result = deleteUserCmd.ExecuteNonQuery();
+
                     return result > 0;
                 }
                 catch (Exception ex)
@@ -160,6 +187,7 @@ namespace ERTC_Client.Helper
             }
             return false;
         }
+
 
 
 
