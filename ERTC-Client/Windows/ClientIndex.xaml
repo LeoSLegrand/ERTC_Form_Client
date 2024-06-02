@@ -90,7 +90,7 @@
 
                         <TextBlock Text="Product Name :" Margin="0,0,0,10"/>
                         <TextBox x:Name="ProductNameTextBox" Margin="0,0,0,10"/>
-                        
+
                         <TextBlock Text="Product Type :" Margin="0,0,0,10"/>
                         <TextBox x:Name="ProductTypeTextBox" Margin="0,0,0,10"/>
 
@@ -104,9 +104,9 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-
         </TabControl>
 
-        <Button Content="Log Out" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Click="LogoutButton_Click"/>
+        <Button Content="Refresh" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,60,0" Click="RefreshButton_Click"/>
+        <Button Content="Log Out" HorizontalAlignment="Right" VerticalAlignment="Top" Click="LogoutButton_Click"/>
     </Grid>
 </Window>

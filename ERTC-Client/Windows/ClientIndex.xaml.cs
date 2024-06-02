@@ -35,6 +35,14 @@ namespace ERTC_Client.Windows
             LoadProducts();
         }
 
+        //REFRESH FETCHED DATA ---------------------------------------------------------------------------------------------------------------------------------------------
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadUsers();
+            LoadProducts();
+        }
+
+
         //FETCH USERS LIST ---------------------------------------------------------------------------------------------------------------------------------------------
         private void LoadUsers()
         {
