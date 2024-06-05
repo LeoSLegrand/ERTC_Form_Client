@@ -20,6 +20,24 @@ namespace ERTC_Client.Helper
             this.connectionString = connectionString;
         }
 
+        //TEST CONNECTION --------------------------------------------------------------------------------------------------------------------------------
+        public bool TestConnection()
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Connection failed: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
         //LOGIN --------------------------------------------------------------------------------------------------------------------------------
         public bool AuthenticateUser(string email, string password)
         {
@@ -394,22 +412,94 @@ namespace ERTC_Client.Helper
             return false;
         }
 
-        //TEST CONNECTION --------------------------------------------------------------------------------------------------------------------------------
-        public bool TestConnection()
+        //CREATE ENTREPRISE --------------------------------------------------------------------------------------------------------------------------------
+        public bool CreateEntreprise(string nomEntreprise, string responsable, string pays)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-                    return true;
+
+                    string query = "INSERT INTO entreprises (nom_entreprise, responsable, pays, created_at, updated_at) VALUES (@NomEntreprise, @Responsable, @Pays, NOW(), NOW())";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@NomEntreprise", nomEntreprise);
+                    cmd.Parameters.AddWithValue("@Responsable", responsable);
+                    cmd.Parameters.AddWithValue("@Pays", pays);
+
+                    int result = cmd.ExecuteNonQuery();
+                    return result > 0;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Connection failed: {ex.Message}");
-                    return false;
+                    Console.WriteLine($"Failed to create entreprise: {ex.Message}");
                 }
             }
+            return false;
         }
+
+        //UPDATE ENTREPRISE --------------------------------------------------------------------------------------------------------------------------------
+        public bool UpdateEntreprise(int id, string nomEntreprise, string responsable, string pays)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "UPDATE entreprises SET nom_entreprise = @NomEntreprise, responsable = @Responsable, pays = @Pays WHERE id = @Id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@NomEntreprise", nomEntreprise);
+                    cmd.Parameters.AddWithValue("@Responsable", responsable);
+                    cmd.Parameters.AddWithValue("@Pays", pays);
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    int result = cmd.ExecuteNonQuery();
+                    return result > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to update entreprise: {ex.Message}");
+                }
+            }
+            return false;
+        }
+
+        //FETCH ENTREPRISE LIST --------------------------------------------------------------------------------------------------------------------------------
+        public List<Entreprise> GetEntreprises()
+        {
+            var entreprises = new List<Entreprise>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM entreprises ORDER BY nom_entreprise";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var entreprise = new Entreprise
+                            {
+                                Id = reader.GetInt32("id"),
+                                NomEntreprise = reader.GetString("nom_entreprise"),
+                                Responsable = reader.GetString("responsable"),
+                                Pays = reader.GetString("pays")
+                            };
+                            entreprises.Add(entreprise);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to retrieve entreprises: {ex.Message}");
+                }
+            }
+
+            return entreprises;
+        }
+
     }
 }

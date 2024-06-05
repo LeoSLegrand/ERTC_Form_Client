@@ -115,6 +115,40 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+
+            <!-- ENTREPRISES -->
+            <TabItem Header="Entreprise">
+                <Grid>
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Entreprise Management" FontSize="20" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Nom de l'Entreprise:" Margin="0,0,0,10"/>
+                        <TextBox x:Name="EntrepriseNameTextBox" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Responsable:" Margin="0,0,0,10"/>
+                        <TextBox x:Name="EntrepriseResponsableTextBox" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Pays:" Margin="0,0,0,10"/>
+                        <TextBox x:Name="EntreprisePaysTextBox" Margin="0,0,0,10"/>
+
+                        <Button Content="Create Entreprise" Click="CreateEntrepriseButton_Click" Margin="0,0,0,10"/>
+                        <Button Content="Update Entreprise" Click="UpdateEntrepriseButton_Click" Margin="0,0,0,10"/>
+
+                        <TextBlock x:Name="EntrepriseManagementStatusTextBlock" Foreground="Red" Margin="0,10,0,0"/>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="200">
+                            <ListBox x:Name="EntreprisesListBox" SelectionChanged="EntreprisesListBox_SelectionChanged" Margin="0,0,0,10">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding NomEntreprise}" Foreground="Black"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
         </TabControl>
 
         <Button Content="Refresh" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,60,0" Click="RefreshButton_Click"/>

@@ -33,6 +33,18 @@ namespace ERTC_Client.Windows
 
             LoadUsers();
             LoadProducts();
+            LoadEntreprises();
+        }
+
+        //LOGOUT ---------------------------------------------------------------------------------------------------------------------------------------------
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Open the MainWindow (Login window)
+            MainWindow loginWindow = new MainWindow();
+            loginWindow.Show();
+
+            // Close the current window
+            this.Close();
         }
 
         //REFRESH FETCHED DATA ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -205,15 +217,95 @@ namespace ERTC_Client.Windows
             }
         }
 
-        //LOGOUT ---------------------------------------------------------------------------------------------------------------------------------------------
-        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        //ENTREPRISE ---------------------------------------------------------------------------------------------------------------------------------------------
+        // Load Entreprises when the Entreprise tab is selected
+        private void EntrepriseTabItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            // Open the MainWindow (Login window)
-            MainWindow loginWindow = new MainWindow();
-            loginWindow.Show();
-
-            // Close the current window
-            this.Close();
+            LoadEntreprises();
         }
+
+        // Fetch and display the list of entreprises
+        private void LoadEntreprises()
+        {
+            var entreprises = dbHelper.GetEntreprises();
+            EntreprisesListBox.ItemsSource = entreprises;
+        }
+
+        // Create Entreprise
+        private void CreateEntrepriseButton_Click(object sender, RoutedEventArgs e)
+        {
+            string nomEntreprise = EntrepriseNameTextBox.Text;
+            string responsable = EntrepriseResponsableTextBox.Text;
+            string pays = EntreprisePaysTextBox.Text;
+
+            if (string.IsNullOrWhiteSpace(nomEntreprise) || string.IsNullOrWhiteSpace(responsable) || string.IsNullOrWhiteSpace(pays))
+            {
+                EntrepriseManagementStatusTextBlock.Text = "All fields are required.";
+                return;
+            }
+
+            if (dbHelper.CreateEntreprise(nomEntreprise, responsable, pays))
+            {
+                EntrepriseManagementStatusTextBlock.Text = "Entreprise created successfully!";
+                ClearEntrepriseInputFields();
+                LoadEntreprises();
+            }
+            else
+            {
+                EntrepriseManagementStatusTextBlock.Text = "Failed to create entreprise.";
+            }
+        }
+
+        // Update Entreprise
+        private void UpdateEntrepriseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (EntreprisesListBox.SelectedItem is Entreprise selectedEntreprise)
+            {
+                string nomEntreprise = EntrepriseNameTextBox.Text;
+                string responsable = EntrepriseResponsableTextBox.Text;
+                string pays = EntreprisePaysTextBox.Text;
+
+                if (string.IsNullOrWhiteSpace(nomEntreprise) || string.IsNullOrWhiteSpace(responsable) || string.IsNullOrWhiteSpace(pays))
+                {
+                    EntrepriseManagementStatusTextBlock.Text = "All fields are required.";
+                    return;
+                }
+
+                if (dbHelper.UpdateEntreprise(selectedEntreprise.Id, nomEntreprise, responsable, pays))
+                {
+                    EntrepriseManagementStatusTextBlock.Text = "Entreprise updated successfully!";
+                    ClearEntrepriseInputFields();
+                    LoadEntreprises();
+                }
+                else
+                {
+                    EntrepriseManagementStatusTextBlock.Text = "Failed to update entreprise.";
+                }
+            }
+            else
+            {
+                EntrepriseManagementStatusTextBlock.Text = "Please select an entreprise to update.";
+            }
+        }
+
+        // Handle selection change in the ListBox
+        private void EntreprisesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (EntreprisesListBox.SelectedItem is Entreprise selectedEntreprise)
+            {
+                EntrepriseNameTextBox.Text = selectedEntreprise.NomEntreprise;
+                EntrepriseResponsableTextBox.Text = selectedEntreprise.Responsable;
+                EntreprisePaysTextBox.Text = selectedEntreprise.Pays;
+            }
+        }
+
+        // Clear input fields
+        private void ClearEntrepriseInputFields()
+        {
+            EntrepriseNameTextBox.Clear();
+            EntrepriseResponsableTextBox.Clear();
+            EntreprisePaysTextBox.Clear();
+        }
+
     }
 }
