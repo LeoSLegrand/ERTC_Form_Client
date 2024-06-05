@@ -498,5 +498,113 @@ namespace ERTC_Client.Helper
             return entreprises;
         }
 
+
+        //USER ROLES --------------------------------------------------------------------------------------------------------------------------------
+        public List<UserWithRoles> GetUsersWithRoles()
+        {
+            List<UserWithRoles> users = new List<UserWithRoles>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = @"
+                SELECT users.id, users.name, users.email, roles.name as role
+                FROM users
+                LEFT JOIN assigned_roles ON users.id = assigned_roles.entity_id
+                LEFT JOIN roles ON assigned_roles.role_id = roles.id";
+
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        Dictionary<int, UserWithRoles> userDict = new Dictionary<int, UserWithRoles>();
+
+                        while (reader.Read())
+                        {
+                            int userId = reader.GetInt32("id");
+                            string userName = reader.GetString("name");
+                            string userEmail = reader.GetString("email");
+                            string roleName = reader.IsDBNull(reader.GetOrdinal("role")) ? null : reader.GetString("role");
+
+                            if (!userDict.ContainsKey(userId))
+                            {
+                                userDict[userId] = new UserWithRoles
+                                {
+                                    Id = userId,
+                                    Name = userName,
+                                    Email = userEmail,
+                                    Roles = new List<string>()
+                                };
+                            }
+
+                            if (roleName != null)
+                            {
+                                userDict[userId].Roles.Add(roleName);
+                            }
+                        }
+
+                        users = userDict.Values.ToList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to load users: {ex.Message}");
+                }
+            }
+
+            return users;
+        }
+
+        //REMOVE USER ROLES --------------------------------------------------------------------------------------------------------------------------------
+        public bool RemoveRoleFromUser(int userId, string roleName)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    // Get the role ID based on the role name
+                    string roleQuery = "SELECT id FROM roles WHERE name = @RoleName";
+                    MySqlCommand roleCmd = new MySqlCommand(roleQuery, conn);
+                    roleCmd.Parameters.AddWithValue("@RoleName", roleName);
+
+                    int roleId;
+                    using (MySqlDataReader roleReader = roleCmd.ExecuteReader())
+                    {
+                        if (roleReader.Read())
+                        {
+                            roleId = roleReader.GetInt32("id");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Role not found");
+                            return false; // Role not found
+                        }
+                    }
+
+                    // Remove the role from the user
+                    string removeRoleQuery = "DELETE FROM assigned_roles WHERE role_id = @RoleId AND entity_id = @UserId";
+                    MySqlCommand removeRoleCmd = new MySqlCommand(removeRoleQuery, conn);
+                    removeRoleCmd.Parameters.AddWithValue("@RoleId", roleId);
+                    removeRoleCmd.Parameters.AddWithValue("@UserId", userId);
+
+                    int result = removeRoleCmd.ExecuteNonQuery();
+                    return result > 0;
+                }
+                catch (MySqlException sqlEx)
+                {
+                    Console.WriteLine($"SQL Error: {sqlEx.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"General Error: {ex.Message}");
+                }
+            }
+            return false;
+        }
+
+
     }
 }

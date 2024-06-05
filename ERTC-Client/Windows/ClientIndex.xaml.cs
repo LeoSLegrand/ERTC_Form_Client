@@ -61,6 +61,8 @@ namespace ERTC_Client.Windows
             UsersListBox.ItemsSource = users;
             UsersListBoxForDelete.ItemsSource = users;
 
+            var usersWithRoles = dbHelper.GetUsersWithRoles();
+            UsersListBox.ItemsSource = usersWithRoles;
         }
 
         //ASSIGN ROLE TO USER ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -78,17 +80,48 @@ namespace ERTC_Client.Windows
                 return;
             }
 
-            User selectedUser = (User)UsersListBox.SelectedItem;
+            UserWithRoles selectedUser = (UserWithRoles)UsersListBox.SelectedItem;
             ComboBoxItem selectedRole = (ComboBoxItem)RolesComboBox.SelectedItem;
             string roleName = selectedRole.Tag.ToString();
 
             if (dbHelper.AssignRoleToUser(selectedUser.Id, roleName))
             {
                 RolesManagementStatusTextBlock.Text = "Role assigned successfully!";
+                LoadUsers(); // Refresh the user list to reflect the changes
             }
             else
             {
                 RolesManagementStatusTextBlock.Text = "Failed to assign role.";
+            }
+        }
+
+        //REMOVE USER ROLE ---------------------------------------------------------------------------------------------------------------------------------------------
+        private void RemoveRoleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (UsersListBox.SelectedItem == null)
+            {
+                RolesManagementStatusTextBlock.Text = "Please select a user.";
+                return;
+            }
+
+            if (RolesComboBox.SelectedItem == null)
+            {
+                RolesManagementStatusTextBlock.Text = "Please select a role.";
+                return;
+            }
+
+            UserWithRoles selectedUser = (UserWithRoles)UsersListBox.SelectedItem;
+            ComboBoxItem selectedRole = (ComboBoxItem)RolesComboBox.SelectedItem;
+            string roleName = selectedRole.Tag.ToString();
+
+            if (dbHelper.RemoveRoleFromUser(selectedUser.Id, roleName))
+            {
+                RolesManagementStatusTextBlock.Text = "Role removed successfully!";
+                LoadUsers(); // Refresh the user list to reflect the changes
+            }
+            else
+            {
+                RolesManagementStatusTextBlock.Text = "Failed to remove role.";
             }
         }
 

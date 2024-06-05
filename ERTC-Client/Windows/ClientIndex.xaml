@@ -63,8 +63,10 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding name}" FontWeight="Bold" Margin="0,0,10,0"/>
-                                        <TextBlock Text="{Binding email}" />
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,0,10,0"/>
+                                        <TextBlock Text="{Binding Email}" Margin="0,0,10,0"/>
+                                        <TextBlock Text="- Current Role: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding RoleDisplay}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -76,12 +78,16 @@
                             <ComboBoxItem Content="Administrateur" Tag="admin"/>
                         </ComboBox>
 
-                        <Button Content="Assign Role" Click="AssignRoleButton_Click" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <Button Content="Assign Role" Click="AssignRoleButton_Click" Margin="0,0,10,0"/>
+                            <Button Content="Remove Role" Click="RemoveRoleButton_Click"/>
+                        </StackPanel>
 
                         <TextBlock x:Name="RolesManagementStatusTextBlock" Foreground="Red" Margin="0,10,0,0"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
+
 
             <!-- PRODUITS -->
             <TabItem Header="Produits">
