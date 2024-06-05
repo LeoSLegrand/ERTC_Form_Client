@@ -206,9 +206,6 @@ namespace ERTC_Client.Helper
             return false;
         }
 
-
-
-
         //FETCH USERS LIST --------------------------------------------------------------------------------------------------------------------------------
         public List<User> GetUsers()
         {

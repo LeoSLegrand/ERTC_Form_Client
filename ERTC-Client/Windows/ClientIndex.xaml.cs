@@ -135,13 +135,14 @@ namespace ERTC_Client.Windows
         //DELETE USERS ---------------------------------------------------------------------------------------------------------------------------------------------
         private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UsersListBox.SelectedItem == null)
+
+            if (UsersListBoxForDelete.SelectedItem == null)
             {
                 UserManagementStatusTextBlock.Text = "Please select a user to delete.";
                 return;
             }
 
-            User selectedUser = (User)UsersListBox.SelectedItem;
+            User selectedUser = (User)UsersListBoxForDelete.SelectedItem;
 
             if (dbHelper.DeleteUser(selectedUser.email))
             {
@@ -153,8 +154,6 @@ namespace ERTC_Client.Windows
                 UserManagementStatusTextBlock.Text = "Failed to delete user.";
             }
         }
-
-
 
         //FETCH PRODUCT LIST --------------------------------------------------------------------------------------------------------------------------------
         private void LoadProducts()
