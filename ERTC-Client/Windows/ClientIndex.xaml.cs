@@ -70,13 +70,13 @@ namespace ERTC_Client.Windows
         {
             if (UsersListBox.SelectedItem == null)
             {
-                RolesManagementStatusTextBlock.Text = "Please select a user.";
+                RolesManagementStatusTextBlock.Text = "Veuiller Choisir un Compte.";
                 return;
             }
 
             if (RolesComboBox.SelectedItem == null)
             {
-                RolesManagementStatusTextBlock.Text = "Please select a role.";
+                RolesManagementStatusTextBlock.Text = "Veuiller Choisir un Rôle à Attribuer.";
                 return;
             }
 
@@ -86,12 +86,12 @@ namespace ERTC_Client.Windows
 
             if (dbHelper.AssignRoleToUser(selectedUser.Id, roleName))
             {
-                RolesManagementStatusTextBlock.Text = "Role assigned successfully!";
+                RolesManagementStatusTextBlock.Text = "Rôle Assigner avec Succès!";
                 LoadUsers(); // Refresh the user list to reflect the changes
             }
             else
             {
-                RolesManagementStatusTextBlock.Text = "Failed to assign role.";
+                RolesManagementStatusTextBlock.Text = "Echec de l'Assignement du Rôle.";
             }
         }
 
@@ -100,13 +100,13 @@ namespace ERTC_Client.Windows
         {
             if (UsersListBox.SelectedItem == null)
             {
-                RolesManagementStatusTextBlock.Text = "Please select a user.";
+                RolesManagementStatusTextBlock.Text = "Veuiller Choisir un Compte.";
                 return;
             }
 
             if (RolesComboBox.SelectedItem == null)
             {
-                RolesManagementStatusTextBlock.Text = "Please select a role.";
+                RolesManagementStatusTextBlock.Text = "Veuiller Choisir un Rôle à Retirer.";
                 return;
             }
 
@@ -116,12 +116,12 @@ namespace ERTC_Client.Windows
 
             if (dbHelper.RemoveRoleFromUser(selectedUser.Id, roleName))
             {
-                RolesManagementStatusTextBlock.Text = "Role removed successfully!";
+                RolesManagementStatusTextBlock.Text = "Rôle Retiré avec Succès!";
                 LoadUsers(); // Refresh the user list to reflect the changes
             }
             else
             {
-                RolesManagementStatusTextBlock.Text = "Failed to remove role.";
+                RolesManagementStatusTextBlock.Text = "Echec de la Suppression du Rôle.";
             }
         }
 
@@ -145,13 +145,13 @@ namespace ERTC_Client.Windows
 
             if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                UserManagementStatusTextBlock.Text = "Name, email, and password cannot be empty.";
+                UserManagementStatusTextBlock.Text = "Les champs: Nom, Email, et Mot de passe ne peuvent êtres vide.";
                 return;
             }
 
             if (dbHelper.CreateUser(name, email, password))
             {
-                UserManagementStatusTextBlock.Text = "User created successfully!";
+                UserManagementStatusTextBlock.Text = "Utilisateur créé avec succès!";
                 // Clear the input fields
                 NewUserNameTextBox.Text = string.Empty;
                 NewUserEmailTextBox.Text = string.Empty;
@@ -160,7 +160,7 @@ namespace ERTC_Client.Windows
             }
             else
             {
-                UserManagementStatusTextBlock.Text = "Failed to create user.";
+                UserManagementStatusTextBlock.Text = "Echec de création de l'utilisateur.";
             }
         }
 
@@ -171,7 +171,7 @@ namespace ERTC_Client.Windows
 
             if (UsersListBoxForDelete.SelectedItem == null)
             {
-                UserManagementStatusTextBlock.Text = "Please select a user to delete.";
+                UserManagementStatusTextBlock.Text = "Veuillez sélectionner l'utilisateur à supprimer.";
                 return;
             }
 
@@ -179,12 +179,12 @@ namespace ERTC_Client.Windows
 
             if (dbHelper.DeleteUser(selectedUser.email))
             {
-                UserManagementStatusTextBlock.Text = "User deleted successfully!";
+                UserManagementStatusTextBlock.Text = "Utilisateur supprimé avec succès!";
                 LoadUsers(); // Refresh the user list
             }
             else
             {
-                UserManagementStatusTextBlock.Text = "Failed to delete user.";
+                UserManagementStatusTextBlock.Text = "Echec lors de la Suppression de l'Utilisateur.";
             }
         }
 
@@ -259,12 +259,12 @@ namespace ERTC_Client.Windows
 
                 if (dbHelper.UpdateProduct(selectedProduct))
                 {
-                    ProductManagementStatusTextBlock.Text = "Product updated successfully!";
+                    ProductManagementStatusTextBlock.Text = "Produit Modifié avec Succès!";
                     LoadProducts();
                 }
                 else
                 {
-                    ProductManagementStatusTextBlock.Text = "Failed to update product.";
+                    ProductManagementStatusTextBlock.Text = "Echec de la Mise à Jour du Produit.";
                 }
             }
         }
@@ -277,7 +277,7 @@ namespace ERTC_Client.Windows
             {
                 if (dbHelper.DeleteProduct(selectedProduct.Id))
                 {
-                    ProductManagementStatusTextBlock.Text = "Product deleted successfully!";
+                    ProductManagementStatusTextBlock.Text = "Produit Supprimé avec Succès!";
                     LoadProducts();
                     ProductNameTextBox.Clear();
                     //ProductTypeTextBox.Clear();
@@ -285,7 +285,7 @@ namespace ERTC_Client.Windows
                 }
                 else
                 {
-                    ProductManagementStatusTextBlock.Text = "Failed to delete product.";
+                    ProductManagementStatusTextBlock.Text = "Echec lors de la Suppression du Produit.";
                 }
             }
         }
@@ -313,19 +313,19 @@ namespace ERTC_Client.Windows
 
             if (string.IsNullOrWhiteSpace(nomEntreprise) || string.IsNullOrWhiteSpace(responsable) || string.IsNullOrWhiteSpace(pays))
             {
-                EntrepriseManagementStatusTextBlock.Text = "All fields are required.";
+                EntrepriseManagementStatusTextBlock.Text = "Tous les champs doivent êtres remplit.";
                 return;
             }
 
             if (dbHelper.CreateEntreprise(nomEntreprise, responsable, pays))
             {
-                EntrepriseManagementStatusTextBlock.Text = "Entreprise created successfully!";
+                EntrepriseManagementStatusTextBlock.Text = "Entreprise Créé avec Succès!";
                 ClearEntrepriseInputFields();
                 LoadEntreprises();
             }
             else
             {
-                EntrepriseManagementStatusTextBlock.Text = "Failed to create entreprise.";
+                EntrepriseManagementStatusTextBlock.Text = "Echec de la Création de l'Entreprise.";
             }
         }
 
@@ -340,24 +340,24 @@ namespace ERTC_Client.Windows
 
                 if (string.IsNullOrWhiteSpace(nomEntreprise) || string.IsNullOrWhiteSpace(responsable) || string.IsNullOrWhiteSpace(pays))
                 {
-                    EntrepriseManagementStatusTextBlock.Text = "All fields are required.";
+                    EntrepriseManagementStatusTextBlock.Text = "Tous les champs doivent êtres remplit";
                     return;
                 }
 
                 if (dbHelper.UpdateEntreprise(selectedEntreprise.Id, nomEntreprise, responsable, pays))
                 {
-                    EntrepriseManagementStatusTextBlock.Text = "Entreprise updated successfully!";
+                    EntrepriseManagementStatusTextBlock.Text = "Entreprise Modifié avec Succès!";
                     ClearEntrepriseInputFields();
                     LoadEntreprises();
                 }
                 else
                 {
-                    EntrepriseManagementStatusTextBlock.Text = "Failed to update entreprise.";
+                    EntrepriseManagementStatusTextBlock.Text = "Eched de la Modification de l'Entreprie.";
                 }
             }
             else
             {
-                EntrepriseManagementStatusTextBlock.Text = "Please select an entreprise to update.";
+                EntrepriseManagementStatusTextBlock.Text = "Veulliez Sélectionner une Entreprise à Modifier.";
             }
         }
 

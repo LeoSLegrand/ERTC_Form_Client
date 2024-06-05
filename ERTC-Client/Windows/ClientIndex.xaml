@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ERTC_Client.Windows"
         mc:Ignorable="d"
-        Title="ClientIndex" Height="600" Width="800"
+        Title="Client ERTC" Height="600" Width="800"
         WindowStartupLocation="CenterScreen"
         Background="LightGray">
     
@@ -13,28 +13,28 @@
         <TabControl>
             <TabItem Header="Dashboard">
                 <Grid>
-                    <TextBlock Text="Welcome to the Admin Dashboard" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+                    <TextBlock Text="Bienvenue sur le client de gestion Admin ERTC" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
                 </Grid>
             </TabItem>
 
             <!-- USERS -->
-            <TabItem Header="Users">
+            <TabItem Header="Utilisateurs">
                 <Grid>
                     <StackPanel Margin="10">
-                        <TextBlock Text="User Management" FontSize="20" Margin="0,0,0,10"/>
+                        <TextBlock Text="Gestion des Comptes" FontSize="20" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="New User Name :" Margin="0,0,0,10"/>
+                        <TextBlock Text="Nom du nouvel utilisateur :" Margin="0,0,0,10"/>
                         <TextBox x:Name="NewUserNameTextBox" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="New User Email:" Margin="0,0,0,10"/>
+                        <TextBlock Text="Email du nouvel utilisateur :" Margin="0,0,0,10"/>
                         <TextBox x:Name="NewUserEmailTextBox" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="New User Password :" Margin="0,0,0,10"/>
+                        <TextBlock Text="Mot de passe du nouvel utilisateur :" Margin="0,0,0,10"/>
                         <PasswordBox x:Name="NewUserPasswordBox" Margin="0,0,0,10"/>
 
-                        <Button Content="Create User" Click="CreateUserButton_Click" Margin="0,0,0,10"/>
+                        <Button Content="Créer le nouvel utilisateur" Click="CreateUserButton_Click" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Users List:" Margin="0,10,0,10"/>
+                        <TextBlock Text="Liste des Comptes :" Margin="0,10,0,10"/>
                         <ListBox x:Name="UsersListBoxForDelete" SelectionChanged="UsersListBox_SelectionChanged" Margin="0,0,0,10">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
@@ -46,7 +46,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
 
-                        <Button Content="Delete User" Click="DeleteUserButton_Click" Margin="0,0,0,10"/>
+                        <Button Content="Supprimer le compte sélectionné" Click="DeleteUserButton_Click" Margin="0,0,0,10"/>
 
                         <TextBlock x:Name="UserManagementStatusTextBlock" Foreground="Red" Margin="0,10,0,0"/>
                     </StackPanel>
@@ -54,10 +54,10 @@
             </TabItem>
 
             <!-- ROLES -->
-            <TabItem Header="Roles">
+            <TabItem Header="Rôles des Comptes">
                 <Grid>
                     <StackPanel Margin="10">
-                        <TextBlock Text="Roles Management" FontSize="20" Margin="0,0,0,10"/>
+                        <TextBlock Text="Gestion des Rôles" FontSize="20" Margin="0,0,0,10"/>
 
                         <ListBox x:Name="UsersListBox" SelectionChanged="UsersListBox_SelectionChanged" Margin="0,0,0,10">
                             <ListBox.ItemTemplate>
@@ -65,7 +65,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,0,10,0"/>
                                         <TextBlock Text="{Binding Email}" Margin="0,0,10,0"/>
-                                        <TextBlock Text="- Current Role: " FontWeight="Bold"/>
+                                        <TextBlock Text="- Rôle(s) Actuel : " FontWeight="Bold"/>
                                         <TextBlock Text="{Binding RoleDisplay}" />
                                     </StackPanel>
                                 </DataTemplate>
@@ -79,8 +79,8 @@
                         </ComboBox>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <Button Content="Assign Role" Click="AssignRoleButton_Click" Margin="0,0,10,0"/>
-                            <Button Content="Remove Role" Click="RemoveRoleButton_Click"/>
+                            <Button Content="Assigner le Rôle Sélectionner" Click="AssignRoleButton_Click" Margin="0,0,10,0"/>
+                            <Button Content="Retirer le Rôle Sélectionner" Click="RemoveRoleButton_Click"/>
                         </StackPanel>
 
                         <TextBlock x:Name="RolesManagementStatusTextBlock" Foreground="Red" Margin="0,10,0,0"/>
@@ -90,7 +90,7 @@
 
 
             <!-- PRODUITS -->
-            <TabItem Header="Produits">
+            <TabItem Header="Gestion Produits">
                 <Grid Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -102,12 +102,12 @@
 
                     <!-- Product Details -->
                     <StackPanel Grid.Column="1">
-                        <TextBlock Text="Edit Product" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <TextBlock Text="Modifier un Produit" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Product Name :" Margin="0,0,0,10"/>
+                        <TextBlock Text="Nom du Produit :" Margin="0,0,0,10"/>
                         <TextBox x:Name="ProductNameTextBox" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Product Type :" Margin="0,0,0,10"/>
+                        <TextBlock Text="Type de Produit :" Margin="0,0,0,10"/>
                         <ComboBox x:Name="ProductTypeComboBox" Margin="0,0,0,10">
                             <ComboBoxItem Content="crème hydratante"/>
                             <ComboBoxItem Content="shampooing"/>
@@ -120,15 +120,15 @@
                             <ComboBoxItem Content="sérum anti-âge"/>
                             <ComboBoxItem Content="Huile pour le visage"/>
                         </ComboBox>
-                        
-                        <TextBlock Text="Product Description :" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Description du Produit :" Margin="0,0,0,10"/>
                         <TextBox x:Name="ProductDescriptionTextBox" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Product Enterprise :" Margin="0,0,0,10"/>
+                        <TextBlock Text="Enterprise du Produit :" Margin="0,0,0,10"/>
                         <ComboBox x:Name="ProductEnterpriseComboBox" Margin="0,0,0,10"/>
 
-                        <Button Content="Update Product" Click="UpdateProductButton_Click" Margin="0,0,0,10"/>
-                        <Button Content="Delete Product" Click="DeleteProductButton_Click"/>
+                        <Button Content="Mettre à jour le Produit" Click="UpdateProductButton_Click" Margin="0,0,0,10"/>
+                        <Button Content="Supprimer le Produit Sélectionné" Click="DeleteProductButton_Click"/>
 
                         <TextBlock x:Name="ProductManagementStatusTextBlock" Foreground="Red" Margin="0,10,0,0"/>
                     </StackPanel>
@@ -136,22 +136,22 @@
             </TabItem>
 
             <!-- ENTREPRISES -->
-            <TabItem Header="Entreprise">
+            <TabItem Header="Gestion Entreprise">
                 <Grid>
                     <StackPanel Margin="10">
-                        <TextBlock Text="Entreprise Management" FontSize="20" Margin="0,0,0,10"/>
+                        <TextBlock Text="Gestion des Entreprise" FontSize="20" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Nom de l'Entreprise:" Margin="0,0,0,10"/>
+                        <TextBlock Text="Nom de l'Entreprise :" Margin="0,0,0,10"/>
                         <TextBox x:Name="EntrepriseNameTextBox" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Responsable:" Margin="0,0,0,10"/>
+                        <TextBlock Text="Responsable :" Margin="0,0,0,10"/>
                         <TextBox x:Name="EntrepriseResponsableTextBox" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Pays:" Margin="0,0,0,10"/>
+                        <TextBlock Text="Pays :" Margin="0,0,0,10"/>
                         <TextBox x:Name="EntreprisePaysTextBox" Margin="0,0,0,10"/>
 
-                        <Button Content="Create Entreprise" Click="CreateEntrepriseButton_Click" Margin="0,0,0,10"/>
-                        <Button Content="Update Entreprise" Click="UpdateEntrepriseButton_Click" Margin="0,0,0,10"/>
+                        <Button Content="Créer l'Entreprise" Click="CreateEntrepriseButton_Click" Margin="0,0,0,10"/>
+                        <Button Content="Mettre à jour l'Entreprise" Click="UpdateEntrepriseButton_Click" Margin="0,0,0,10"/>
 
                         <TextBlock x:Name="EntrepriseManagementStatusTextBlock" Foreground="Red" Margin="0,10,0,0"/>
 
@@ -170,7 +170,7 @@
 
         </TabControl>
 
-        <Button Content="Refresh" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,60,0" Click="RefreshButton_Click"/>
-        <Button Content="Log Out" HorizontalAlignment="Right" VerticalAlignment="Top" Click="LogoutButton_Click"/>
+        <Button Content="Recharger" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,80,0" Click="RefreshButton_Click"/>
+        <Button Content="Déconnexion" HorizontalAlignment="Right" VerticalAlignment="Top" Click="LogoutButton_Click"/>
     </Grid>
 </Window>

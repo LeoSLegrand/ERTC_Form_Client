@@ -27,7 +27,7 @@ namespace ERTC_Client
 
             if (!dbHelper.TestConnection())
             {
-                StatusTextBlock.Text = "Failed to connect to database.";
+                StatusTextBlock.Text = "Echec de la connexion à la base de donnée.";
             }
         }
 
@@ -38,13 +38,13 @@ namespace ERTC_Client
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                StatusTextBlock.Text = "Email and password cannot be empty.";
+                StatusTextBlock.Text = "L'email et le mot de passe ne peuvent êtres vide.";
                 return;
             }
 
             if (dbHelper.AuthenticateUser(email, password))
             {
-                StatusTextBlock.Text = "Login successful!";
+                StatusTextBlock.Text = "Connexion réussite!";
 
                 // Open the Index window
                 ClientIndex indexWindow = new ClientIndex();
@@ -53,7 +53,7 @@ namespace ERTC_Client
             }
             else
             {
-                StatusTextBlock.Text = "Invalid email or password, or you do not have admin access.";
+                StatusTextBlock.Text = "Mot de passe ou email invalide, ou vôtre compte n'a pas le rôle admin.";
             }
         }
 

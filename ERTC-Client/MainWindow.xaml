@@ -13,12 +13,12 @@
 
         <StackPanel>
             <TextBlock Text="Connexion Client Admin" Grid.Row="0" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="212"/>
-            <TextBlock Text="Admin Email:" Margin="10" Width="275"/>
+            <TextBlock Text="Email Admin :" Margin="10" Width="275"/>
             <TextBox x:Name="EmailTextBox" Width="300"/>
-            <TextBlock Text="Admin Password:" Margin="10" Width="275"/>
+            <TextBlock Text="Mot de Passe Admin :" Margin="10" Width="275"/>
             <PasswordBox x:Name="PasswordBox" Margin="10" Width="300"/>
             <TextBlock x:Name="StatusTextBlock" Foreground="Blue" Margin="10"/>
-            <Button Content="Login" Click="LoginButton_Click" Width="184"/>
+            <Button Content="Connexion" Click="LoginButton_Click" Width="184"/>
         </StackPanel>
     </Grid>
 </Window>
