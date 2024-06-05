@@ -372,11 +372,18 @@ namespace ERTC_Client.Helper
                 {
                     conn.Open();
 
-                    string query = "DELETE FROM produits WHERE id = @Id";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@Id", productId);
+                    // Delete related tests first
+                    string deleteTestsQuery = "DELETE FROM tests WHERE produit_id = @ProductId";
+                    MySqlCommand deleteTestsCmd = new MySqlCommand(deleteTestsQuery, conn);
+                    deleteTestsCmd.Parameters.AddWithValue("@ProductId", productId);
+                    deleteTestsCmd.ExecuteNonQuery();
 
-                    int result = cmd.ExecuteNonQuery();
+                    // Delete the product
+                    string deleteProductQuery = "DELETE FROM produits WHERE id = @Id";
+                    MySqlCommand deleteProductCmd = new MySqlCommand(deleteProductQuery, conn);
+                    deleteProductCmd.Parameters.AddWithValue("@Id", productId);
+
+                    int result = deleteProductCmd.ExecuteNonQuery();
                     return result > 0;
                 }
                 catch (Exception ex)
