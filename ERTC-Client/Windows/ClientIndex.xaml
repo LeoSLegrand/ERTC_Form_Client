@@ -108,10 +108,24 @@
                         <TextBox x:Name="ProductNameTextBox" Margin="0,0,0,10"/>
 
                         <TextBlock Text="Product Type :" Margin="0,0,0,10"/>
-                        <TextBox x:Name="ProductTypeTextBox" Margin="0,0,0,10"/>
-
+                        <ComboBox x:Name="ProductTypeComboBox" Margin="0,0,0,10">
+                            <ComboBoxItem Content="crème hydratante"/>
+                            <ComboBoxItem Content="shampooing"/>
+                            <ComboBoxItem Content="savon"/>
+                            <ComboBoxItem Content="lotion tonique"/>
+                            <ComboBoxItem Content="masque facial"/>
+                            <ComboBoxItem Content="démaquillant"/>
+                            <ComboBoxItem Content="baume à lèvres"/>
+                            <ComboBoxItem Content="exfoliant corporel"/>
+                            <ComboBoxItem Content="sérum anti-âge"/>
+                            <ComboBoxItem Content="Huile pour le visage"/>
+                        </ComboBox>
+                        
                         <TextBlock Text="Product Description :" Margin="0,0,0,10"/>
                         <TextBox x:Name="ProductDescriptionTextBox" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Product Enterprise :" Margin="0,0,0,10"/>
+                        <ComboBox x:Name="ProductEnterpriseComboBox" Margin="0,0,0,10"/>
 
                         <Button Content="Update Product" Click="UpdateProductButton_Click" Margin="0,0,0,10"/>
                         <Button Content="Delete Product" Click="DeleteProductButton_Click"/>

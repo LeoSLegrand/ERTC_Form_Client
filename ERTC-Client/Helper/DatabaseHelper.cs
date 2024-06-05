@@ -359,12 +359,13 @@ namespace ERTC_Client.Helper
                 {
                     conn.Open();
 
-                    string query = "UPDATE produits SET nom_produit = @NomProduit, type_produit = @TypeProduit, description = @Description, updated_at = @UpdatedAt WHERE id = @Id";
+                    string query = "UPDATE produits SET nom_produit = @NomProduit, type_produit = @TypeProduit, description = @Description, updated_at = @UpdatedAt, entreprise_id = @EntrepriseId WHERE id = @Id";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@NomProduit", product.nom_produit);
                     cmd.Parameters.AddWithValue("@TypeProduit", product.type_produit);
                     cmd.Parameters.AddWithValue("@Description", product.description);
                     cmd.Parameters.AddWithValue("@UpdatedAt", product.updated_at);
+                    cmd.Parameters.AddWithValue("@EntrepriseId", product.entreprise_id);
                     cmd.Parameters.AddWithValue("@Id", product.Id);
 
                     int result = cmd.ExecuteNonQuery();
@@ -377,6 +378,7 @@ namespace ERTC_Client.Helper
             }
             return false;
         }
+
 
         //DELETE PRODUCT --------------------------------------------------------------------------------------------------------------------------------
         public bool DeleteProduct(int productId)
@@ -497,7 +499,6 @@ namespace ERTC_Client.Helper
 
             return entreprises;
         }
-
 
         //USER ROLES --------------------------------------------------------------------------------------------------------------------------------
         public List<UserWithRoles> GetUsersWithRoles()

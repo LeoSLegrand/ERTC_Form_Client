@@ -201,11 +201,45 @@ namespace ERTC_Client.Windows
             if (ProductsListBox.SelectedItem is Product selectedProduct)
             {
                 ProductNameTextBox.Text = selectedProduct.nom_produit;
-                ProductTypeTextBox.Text = selectedProduct.type_produit;
                 ProductDescriptionTextBox.Text = selectedProduct.description;
+
+                // Iterate through ComboBox items to find and select the matching type_produit
+                foreach (ComboBoxItem item in ProductTypeComboBox.Items)
+                {
+                    if (item.Content.ToString() == selectedProduct.type_produit)
+                    {
+                        ProductTypeComboBox.SelectedItem = item;
+                        break;
+                    }
+                }
+
+                // Load product enterprises and select the current one
+                LoadProductEnterprises(selectedProduct.entreprise_id);
             }
         }
 
+        //LOAD PRODUCT ENTREPRISE --------------------------------------------------------------------------------------------------------------------------------
+        private void LoadProductEnterprises(int selectedEnterpriseId)
+        {
+            var entreprises = dbHelper.GetEntreprises();
+            ProductEnterpriseComboBox.Items.Clear();
+
+            foreach (var entreprise in entreprises)
+            {
+                ComboBoxItem item = new ComboBoxItem
+                {
+                    Content = entreprise.NomEntreprise,
+                    Tag = entreprise.Id
+                };
+
+                ProductEnterpriseComboBox.Items.Add(item);
+
+                if (entreprise.Id == selectedEnterpriseId)
+                {
+                    ProductEnterpriseComboBox.SelectedItem = item;
+                }
+            }
+        }
 
         //UPDATE A PRODUCT --------------------------------------------------------------------------------------------------------------------------------
         private void UpdateProductButton_Click(object sender, RoutedEventArgs e)
@@ -213,9 +247,15 @@ namespace ERTC_Client.Windows
             if (ProductsListBox.SelectedItem is Product selectedProduct)
             {
                 selectedProduct.nom_produit = ProductNameTextBox.Text;
-                selectedProduct.type_produit = ProductTypeTextBox.Text;
+                selectedProduct.type_produit = (ProductTypeComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
                 selectedProduct.description = ProductDescriptionTextBox.Text;
                 selectedProduct.updated_at = DateTime.Now;
+
+                // Retrieve the selected enterprise ID from the ComboBox
+                if (ProductEnterpriseComboBox.SelectedItem is ComboBoxItem selectedEnterpriseItem)
+                {
+                    selectedProduct.entreprise_id = (int)selectedEnterpriseItem.Tag;
+                }
 
                 if (dbHelper.UpdateProduct(selectedProduct))
                 {
@@ -229,6 +269,7 @@ namespace ERTC_Client.Windows
             }
         }
 
+
         //DELETE A PRODUCT --------------------------------------------------------------------------------------------------------------------------------
         private void DeleteProductButton_Click(object sender, RoutedEventArgs e)
         {
@@ -239,7 +280,7 @@ namespace ERTC_Client.Windows
                     ProductManagementStatusTextBlock.Text = "Product deleted successfully!";
                     LoadProducts();
                     ProductNameTextBox.Clear();
-                    ProductTypeTextBox.Clear();
+                    //ProductTypeTextBox.Clear();
                     ProductDescriptionTextBox.Clear();
                 }
                 else
